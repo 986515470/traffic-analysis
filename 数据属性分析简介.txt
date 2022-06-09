@@ -1,0 +1,21 @@
+
+/*
+"trip_id", "arrival_time", "departure_time" ,     "stop_id",   "stop_sequence", "stop_name"
+   行程id       到达站点时间           出发站点时间       停靠站台id       行程站点序号      站台名称
+
+ "route_id",
+  路线id 通常包含多个不同的行程 ,
+
+ "parent_station", "service_id", "trip_headsign", "route_short_name","route_long_name",
+     车站id,             服务id,         行程的全名,         路线简写,        路线全名
+
+ "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "start_date","end_date",       // 1为有调度信息 0为没有调度信息
+    星期一,   星期二,      星期三,      星期四,      星期五,      星期六,     星期日,    开始日期,     结束日期,
+
+ "index_number", "fetch_time", "arrival_delay", "actual_arrival_time",       "departure_delay",    "actual_departure_time",       "date"
+     索引号,         抓取时间,       到达延迟,          实际到达时间,默认为‘0’ ,           出发延迟,              实际出发时间,默认为‘0’,        日期
+
+*/
+
+
+

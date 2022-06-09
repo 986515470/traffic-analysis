@@ -1,0 +1,4447 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>ECharts</title>
+	<!-- 引入刚刚下载的 ECharts 文件 -->
+	<script src="../static/echarts/echarts.js"></script>
+</head>
+<body>
+<!-- 为 ECharts 准备一个定义了宽高的 DOM -->
+<div id="main" style="width: 1800px;height:400px;margin-top: 50px"></div>
+<script type="text/javascript">
+	// 基于准备好的dom，初始化echarts实例
+	var myChart = echarts.init(document.getElementById('main'));
+	/**
+	 * (路线id/route_id) 与 (一周日期/(monday,tuesday,wednesday,thursday,friday,saturday,sunday) )调度信息最多的10个集合
+	 * APS_1a = [5875, 5875, 4633, 5270, 1808, 0, 0] : 23461
+	 * NSN_1a = [4633, 4615, 2958, 3523, 1244, 0, 2] : 16975
+	 * APS_2a = [4236, 4236, 3352, 3721, 1320, 0, 0] : 16865
+	 * IWL_1c = [4004, 4002, 3113, 3358, 1411, 0, 0] : 15888
+	 * IWL_1a = [3246, 3246, 2552, 3086, 1164, 0, 0] : 13294
+	 * ESI_2a = [2763, 2745, 2444, 2668, 1824, 11, 11] : 12466
+	 * ESI_1a = [2766, 2739, 2469, 2641, 1770, 0, 0] : 12385
+	 * IWL_2d = [3090, 3090, 2337, 2611, 1148, 0, 0] : 12276
+	 * NTH_1a = [3318, 3316, 1226, 2707, 1640, 0, 0] : 12207
+	 * NSN_2a = [3192, 3181, 2506, 2402, 591, 0, 0] : 11872
+	 * @type {{yAxis: {}, xAxis: {data: string[]}, series: [{stack: string, data: number[], type: string},{stack: string, data: number[], type: string},{stack: string, data: number[], type: string},{stack: string, data: number[], type: string},{stack: string, data: number[], type: string},null,null], title: {text: string}}}
+	 */
+	var option = {
+		toolbox: { //可视化的工具箱
+			show: true,
+			feature: {
+				dataView: { //数据视图
+					show: true
+				},
+				restore: { //重置
+					show: true
+				},
+				dataZoom: { //数据缩放视图
+					show: true
+				},
+				saveAsImage: {//保存图片
+					show: true
+				},
+				magicType: {//动态类型切换
+					type: ['bar', 'line', 'stack', 'tiled']
+				}
+			}
+		},
+		tooltip: {
+			trigger: 'axis',
+			axisPointer: {
+				type: 'cross',
+				crossStyle: {
+					color: '#999'
+				}
+			}
+		},
+		legend: {
+			data: ['APS_1a', 'NSN_1a', 'APS_2a', 'IWL_1c', 'IWL_1a', 'ESI_2a', 'ESI_1a', 'IWL_2d', 'NTH_1a', 'NSN_2a']
+		},
+		
+		title: {
+			text: '一周调度信息最多的10个(route_id)路线集合',
+			subtext: '数据来源：调度系统',
+			//居中显示
+			x: 'center',
+			y: 'right',
+		},
+		xAxis: {
+			data: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+		},
+		yAxis: {},
+		
+		series: [
+			{
+				data: [5875, 5875, 4633, 5270, 1808, 0, 0],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'APS_1a'
+			},
+			{
+				data: [4633, 4615, 2958, 3523, 1244, 0, 2],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'NSN_1a'
+			},
+			{
+				data: [4236, 4236, 3352, 3721, 1320, 0, 0],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'APS_2a'
+				
+			}
+			,
+			{
+				data: [4004, 4002, 3113, 3358, 1411, 0, 0],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'IWL_1c'
+			}
+			,
+			{
+				data: [3246, 3246, 2552, 3086, 1164, 0, 0],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'IWL_1a'
+				
+			}
+			,
+			{
+				data: [2763, 2745, 2444, 2668, 1824, 11, 11],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'ESI_2a'
+			}
+			,
+			{
+				data: [2766, 2739, 2469, 2641, 1770, 0, 0],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'ESI_1a'
+			}
+			, {
+				data: [3090, 3090, 2337, 2611, 1148, 0, 0],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'IWL_2d'
+			},
+			{
+				data: [3192, 3181, 2506, 2402, 591, 0, 0],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'NTH_1a'
+			},
+			{
+				data: [3192, 3181, 2506, 2402, 591, 0, 0],
+				type: 'line',
+				smooth: true,
+				seriesLayoutBy: 'row',
+				emphasis: {focus: 'series'},
+				name: 'NSN_2a'
+			}
+		]
+	};
+	
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+</script>
+<div id="main2" style="width: 1800px;height:800px;"></div>
+<script type="text/javascript">
+	
+	var myChart2 = echarts.init(document.getElementById('main2'));
+	// 指定图表的配置项和数据
+	/**
+	 * 延迟几率最高的5个行程(route_id)对应的 到达延迟几率 | 实际到达延迟几率 | 出发延迟几率 | 实际出发延迟几率
+	 * --------------------------------------------------------------------------------
+	 * IWL_1j =    0.04    |     0.02    |     0.96     |     0.92
+	 * SHL_1d =    0.48    |     0.59    |     0.41     |     0.45
+	 * SHL_2d =    0.25    |     0.25    |     0.67     |     0.67
+	 * CTY_W2b =    1.0    |     0.8    |     0.0     |     0.0
+	 * CTY_NW2a =    0.11    |     0.11    |     0.83     |     0.56
+	 */
+			// 使用刚指定的配置项和数据显示图表。
+	var option2 = {
+				toolbox: { //可视化的工具箱
+					show: true,
+					feature: {
+						dataView: { //数据视图
+							show: true
+						},
+						restore: { //重置
+							show: true
+						},
+						dataZoom: { //数据缩放视图
+							show: true
+						},
+						saveAsImage: {//保存图片
+							show: true
+						},
+						magicType: {//动态类型切换
+							type: ['bar', 'line', 'stack', 'tiled']
+						}
+					}
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'cross',
+						crossStyle: {
+							color: '#999'
+						}
+					}
+				},
+				legend: {},
+				dataset: {
+					source: [
+						['probability', '到达延迟几率', '实际到达延迟几率', '出发延迟几率', '实际出发延迟几率'],
+						['IWL_1j', 0.04, 0.02, 0.96, 0.92],
+						['SHL_1d', 0.48, 0.59, 0.41, 0.45],
+						['SHL_2d', 0.25, 0.25, 0.67, 0.67],
+						['CTY_W2b', 1.0, 0.8, 0.0, 0.0],
+						['CTY_NW2a', 0.11, 0.11, 0.83, 0.56]
+					]
+				},
+				//设置标题居中
+				title: {
+					text: '延迟几率最高的5个行程(route_id)对应的 到达延迟几率 | 实际到达延迟几率 | 出发延迟几率 | 实际出发延迟几率',
+					x: 'center',
+					//设置为工具栏下面
+					y: 'middle',
+					textStyle: {
+						fontSize: 20,
+						fontWeight: 'bold'
+					}
+				},
+				xAxis: {type: 'category'},
+				yAxis: {gridIndex: 0},
+				grid: {top: '55%'},
+				series: [
+					{
+						type: 'line',
+						smooth: true,
+						seriesLayoutBy: 'row',
+						emphasis: {focus: 'series'}
+					},
+					{
+						type: 'line',
+						smooth: true,
+						seriesLayoutBy: 'row',
+						emphasis: {focus: 'series'}
+					},
+					{
+						type: 'line',
+						smooth: true,
+						seriesLayoutBy: 'row',
+						emphasis: {focus: 'series'}
+					},
+					{
+						type: 'line',
+						smooth: true,
+						seriesLayoutBy: 'row',
+						emphasis: {focus: 'series'}
+					},
+					,
+					{
+						type: 'line',
+						smooth: true,
+						seriesLayoutBy: 'row',
+						emphasis: {focus: 'series'}
+					},
+					{
+						type: 'pie',
+						id: 'pie',
+						radius: '30%',
+						center: ['50%', '25%'],
+						emphasis: {
+							focus: 'self'
+						},
+						label: {
+							formatter: '{b}: {@2012} ({d}%)'
+						},
+						encode: {
+							itemName: 'probability',
+							value: '到达延迟几率',
+							tooltip: '到达延迟几率'
+						}
+					}
+				]
+			};
+	myChart.on('updateAxisPointer', function (event) {
+		const xAxisInfo = event.axesInfo[0];
+		if (xAxisInfo) {
+			const dimension = xAxisInfo.value + 1;
+			myChart.setOption({
+				series: {
+					id: 'pie',
+					label: {
+						formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+					},
+					encode: {
+						value: dimension,
+						tooltip: dimension
+					}
+				}
+			});
+		}
+	});
+	myChart2.setOption(option2);
+</script>
+<div id="main3" style="width: 1800px;height:600px;"></div>
+<script type="text/javascript">
+	var myChart3 = echarts.init(document.getElementById('main3'));
+	var data = [
+		{
+			"name": "Campbelltown Station Platform 3",
+			"children": [
+				{
+					"name": " Central Station Platform 6",
+					"children": [
+						{
+							"name": " Moss Vale Station Platform 2",
+							"children": [
+								{
+									"name": " Bowral Station Platform 2",
+									"children": [
+										{
+											"name": " Goulburn Station Platform 2",
+											"children": [
+												{
+													"name": " Tarago Station Platform 1",
+													"children": [
+														{
+															"name": " Bungendore Station Platform 1",
+															"children": [
+																{
+																	"name": " Queanbeyan Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Mittagong Station Platform 2",
+																			"children": [
+																				{
+																					"name": " Canberra Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Bundanoon Station Platform 2",
+																							"children": [
+																								{
+																									"name": " Central Station Platform 4",
+																									"children": [
+																										{
+																											"name": " Central Station Platform 2",
+																											"children": [
+																												{
+																													"name": " Central Station Platform 7",
+																													"children": [
+																														{
+																															"name": " Central Station Platform 5",
+																															"children": [
+																																{
+																																	"name": " Lithgow Station Platform 2",
+																																	"children": [
+																																		{
+																																			"name": " Redfern Station Platform 1"
+																																		}
+																																	]
+																																},
+																																{
+																																	"name": " Westmead Station Platform 3"
+																																},
+																																{
+																																	"name": " Eastwood Station Platform 3",
+																																	"children": [
+																																		{
+																																			"name": " Lindfield Station Platform 3",
+																																			"children": [
+																																				{
+																																					"name": " Town Hall Station Platform 3",
+																																					"children": [
+																																						{
+																																							"name": " Wynyard Station Platform 4",
+																																							"children": [
+																																								{
+																																									"name": " Milsons Point Station Platform 2",
+																																									"children": [
+																																										{
+																																											"name": " North Sydney Station Platform 4"
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				}
+																																			]
+																																		}
+																																	]
+																																},
+																																{
+																																	"name": " Wyong Station Platform 1"
+																																}
+																															]
+																														}
+																													]
+																												},
+																												{
+																													"name": " Gunning Station Platform 2"
+																												},
+																												{
+																													"name": " Central Station Platform 9"
+																												}
+																											]
+																										},
+																										{
+																											"name": " Penrith Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Strathfield Station Platform 4",
+																													"children": [
+																														{
+																															"name": " Central Station Platform 3",
+																															"children": [
+																																{
+																																	"name": " Valley Heights Station Platform 2",
+																																	"children": [
+																																		{
+																																			"name": " Central Station Platform 8",
+																																			"children": [
+																																				{
+																																					"name": " Westmead Station Platform 2",
+																																					"children": [
+																																						{
+																																							"name": " Lithgow Station Platform 1"
+																																						}
+																																					]
+																																				},
+																																				{
+																																					"name": " St Marys Station Platform 4"
+																																				},
+																																				{
+																																					"name": " Burwood Station Platform 2",
+																																					"children": [
+																																						{
+																																							"name": " Rhodes Station Platform 2",
+																																							"children": [
+																																								{
+																																									"name": " Epping Station Platform 2",
+																																									"children": [
+																																										{
+																																											"name": " West Ryde Station Platform 2",
+																																											"children": [
+																																												{
+																																													"name": " Denistone Station Platform 2"
+																																												}
+																																											]
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				},
+																																				{
+																																					"name": " Meadowbank Station Platform 1"
+																																				},
+																																				{
+																																					"name": " Mount Colah Station Platform 2",
+																																					"children": [
+																																						{
+																																							"name": " Mount Kuring-gai Station Platform 2",
+																																							"children": [
+																																								{
+																																									"name": " Asquith Station Platform 2"
+																																								}
+																																							]
+																																						}
+																																					]
+																																				}
+																																			]
+																																		},
+																																		{
+																																			"name": " Springwood Station Platform 2",
+																																			"children": [
+																																				{
+																																					"name": " Faulconbridge Station Platform 2",
+																																					"children": [
+																																						{
+																																							"name": " Linden Station Platform 2",
+																																							"children": [
+																																								{
+																																									"name": " Zig Zag Station Platform 2",
+																																									"children": [
+																																										{
+																																											"name": " Bell Station Platform 2",
+																																											"children": [
+																																												{
+																																													"name": " Blackheath Station Platform 2",
+																																													"children": [
+																																														{
+																																															"name": " Medlow Bath Station Platform 2"
+																																														}
+																																													]
+																																												}
+																																											]
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				}
+																																			]
+																																		}
+																																	]
+																																},
+																																{
+																																	"name": " Newcastle Interchange Station Platform 1",
+																																	"children": [
+																																		{
+																																			"name": " Strathfield Station Platform 5",
+																																			"children": [
+																																				{
+																																					"name": " Concord West Station Platform 2",
+																																					"children": [
+																																						{
+																																							"name": " North Strathfield Station Platform 1",
+																																							"children": [
+																																								{
+																																									"name": " Eastwood Station Platform 2"
+																																								}
+																																							]
+																																						}
+																																					]
+																																				}
+																																			]
+																																		}
+																																	]
+																																}
+																															]
+																														},
+																														{
+																															"name": " Marayong Station Platform 1"
+																														}
+																													]
+																												},
+																												{
+																													"name": " Doonside Station Platform 2",
+																													"children": [
+																														{
+																															"name": " Rooty Hill Station Platform 2",
+																															"children": [
+																																{
+																																	"name": " Mount Druitt Station Platform 2"
+																																}
+																															]
+																														}
+																													]
+																												},
+																												{
+																													"name": " Seven Hills Station Platform 3"
+																												}
+																											]
+																										},
+																										{
+																											"name": " Broken Hill Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Menindee Station Platform 1",
+																													"children": [
+																														{
+																															"name": " Darnick Station Platform 1",
+																															"children": [
+																																{
+																																	"name": " Ivanhoe Station Platform 1",
+																																	"children": [
+																																		{
+																																			"name": " Euabalong West Station Platform 1",
+																																			"children": [
+																																				{
+																																					"name": " Condobolin Station Platform 1",
+																																					"children": [
+																																						{
+																																							"name": " Parkes Station Platform 1",
+																																							"children": [
+																																								{
+																																									"name": " Parramatta Station Platform 2",
+																																									"children": [
+																																										{
+																																											"name": " Penrith Station Platform 3",
+																																											"children": [
+																																												{
+																																													"name": " Orange Station Platform 1",
+																																													"children": [
+																																														{
+																																															"name": " Blayney Station Platform 1"
+																																														}
+																																													]
+																																												}
+																																											]
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				}
+																																			]
+																																		}
+																																	]
+																																}
+																															]
+																														}
+																													]
+																												}
+																											]
+																										},
+																										{
+																											"name": " Redfern Station Platform 2",
+																											"children": [
+																												{
+																													"name": " Thirroul Station Platform 3"
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				},
+																				{
+																					"name": " Yerrinbool Station Platform 2",
+																					"children": [
+																						{
+																							"name": " Bargo Station Platform 2",
+																							"children": [
+																								{
+																									"name": " Tahmoor Station Platform 2"
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																},
+																{
+																	"name": " Bundanoon Station Platform 1"
+																}
+															]
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": " Douglas Park Station Platform 2",
+											"children": [
+												{
+													"name": " Menangle Station Platform 2",
+													"children": [
+														{
+															"name": " Menangle Park Station Platform 2"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": " Southern Cross Station Platform 1",
+									"children": [
+										{
+											"name": " Goulburn Station Platform 1",
+											"children": [
+												{
+													"name": " Seymour Station Platform 1",
+													"children": [
+														{
+															"name": " Benalla Station Platform 1",
+															"children": [
+																{
+																	"name": " Wangaratta Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Albury Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Culcairn Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Henty Station Platform 1",
+																							"children": [
+																								{
+																									"name": " The Rock Station Platform 1",
+																									"children": [
+																										{
+																											"name": " Wagga Wagga Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Junee Station Platform 1",
+																													"children": [
+																														{
+																															"name": " Harden Station Platform 2",
+																															"children": [
+																																{
+																																	"name": " Yass Junction Station Platform 2",
+																																	"children": [
+																																		{
+																																			"name": " Cootamundra Station Platform 1"
+																																		}
+																																	]
+																																}
+																															]
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												},
+												{
+													"name": " Marulan Station Platform 2",
+													"children": [
+														{
+															"name": " Tallong Station Platform 2",
+															"children": [
+																{
+																	"name": " Wingello Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Penrose Station Platform 2"
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": " Broadmeadows Station Platform 3"
+										}
+									]
+								},
+								{
+									"name": " Picton Station Platform 2"
+								}
+							]
+						},
+						{
+							"name": " Penrith Station Platform 2",
+							"children": [
+								{
+									"name": " Parramatta Station Platform 1",
+									"children": [
+										{
+											"name": " Emu Plains Station Platform 1",
+											"children": [
+												{
+													"name": " Blacktown Station Platform 5",
+													"children": [
+														{
+															"name": " Strathfield Station Platform 2",
+															"children": [
+																{
+																	"name": " Lapstone Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Bell Station Platform 1"
+																		}
+																	]
+																},
+																{
+																	"name": " Schofields Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Blacktown Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Blacktown Station Platform 3",
+																					"children": [
+																						{
+																							"name": " Blacktown Station Platform 2"
+																						},
+																						{
+																							"name": " Burwood Station Platform 3"
+																						},
+																						{
+																							"name": " Toongabbie Station Platform 3",
+																							"children": [
+																								{
+																									"name": " Pendle Hill Station Platform 3",
+																									"children": [
+																										{
+																											"name": " Wentworthville Station Platform 3"
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				},
+																				{
+																					"name": " Clyde Station Platform 2",
+																					"children": [
+																						{
+																							"name": " Harris Park Station Platform 1",
+																							"children": [
+																								{
+																									"name": " Richmond Station Platform 1"
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		},
+																		{
+																			"name": " Mulgrave Station Platform 2"
+																		}
+																	]
+																}
+															]
+														}
+													]
+												},
+												{
+													"name": " St Marys Station Platform 2",
+													"children": [
+														{
+															"name": " Hornsby Station Platform 4",
+															"children": [
+																{
+																	"name": " Seven Hills Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Granville Station Platform 1"
+																		}
+																	]
+																},
+																{
+																	"name": " North Strathfield Station Platform 2"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": " Kingswood Station Platform 1",
+									"children": [
+										{
+											"name": " Werrington Station Platform 1",
+											"children": [
+												{
+													"name": " St Marys Station Platform 1",
+													"children": [
+														{
+															"name": " Mount Druitt Station Platform 1",
+															"children": [
+																{
+																	"name": " Doonside Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Rooty Hill Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Seven Hills Station Platform 2"
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": " Kingswood Station Platform 2",
+									"children": [
+										{
+											"name": " Werrington Station Platform 2"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": " Lapstone Station Platform 2",
+							"children": [
+								{
+									"name": " Glenbrook Station Platform 2",
+									"children": [
+										{
+											"name": " Blaxland Station Platform 2",
+											"children": [
+												{
+													"name": " Warrimoo Station Platform 2"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Liverpool Station Platform 2",
+			"children": [
+				{
+					"name": " Central Station Platform 20",
+					"children": [
+						{
+							"name": " Redfern Station Platform 5",
+							"children": [
+								{
+									"name": " Granville Station Platform 4",
+									"children": [
+										{
+											"name": " Macarthur Station Platform 3",
+											"children": [
+												{
+													"name": " Campbelltown Station Platform 1",
+													"children": [
+														{
+															"name": " Central Station Platform 16",
+															"children": [
+																{
+																	"name": " Campbelltown Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Picton Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Tahmoor Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Moss Vale Station Platform 1"
+																						}
+																					]
+																				}
+																			]
+																		},
+																		{
+																			"name": " Schofields Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Quakers Hill Station Platform 1",
+																					"children": [
+																						{
+																							"name": " East Richmond Station Platform 1",
+																							"children": [
+																								{
+																									"name": " Mulgrave Station Platform 1",
+																									"children": [
+																										{
+																											"name": " Vineyard Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Clarendon Station Platform 1"
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		},
+																		{
+																			"name": " Bardwell Park Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Bexley North Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Kingsgrove Station Platform 1",
+																							"children": [
+																								{
+																									"name": " Beverly Hills Station Platform 1",
+																									"children": [
+																										{
+																											"name": " Narwee Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Riverwood Station Platform 1",
+																													"children": [
+																														{
+																															"name": " Padstow Station Platform 1",
+																															"children": [
+																																{
+																																	"name": " Turrella Station Platform 1"
+																																}
+																															]
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												},
+												{
+													"name": " Macarthur Station Platform 1"
+												},
+												{
+													"name": " Central Station Platform 11"
+												},
+												{
+													"name": " Burradoo Station Platform 2"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": " Edmondson Park Station Platform 1",
+									"children": [
+										{
+											"name": " Central Station Platform 17",
+											"children": [
+												{
+													"name": " Domestic Station Platform 2",
+													"children": [
+														{
+															"name": " Mascot Station Platform 2",
+															"children": [
+																{
+																	"name": " Turrella Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Bardwell Park Station Platform 2",
+																			"children": [
+																				{
+																					"name": " Bexley North Station Platform 2",
+																					"children": [
+																						{
+																							"name": " Kingsgrove Station Platform 2",
+																							"children": [
+																								{
+																									"name": " Beverly Hills Station Platform 2",
+																									"children": [
+																										{
+																											"name": " Narwee Station Platform 2",
+																											"children": [
+																												{
+																													"name": " Riverwood Station Platform 2",
+																													"children": [
+																														{
+																															"name": " Padstow Station Platform 2",
+																															"children": [
+																																{
+																																	"name": " Revesby Station Platform 3",
+																																	"children": [
+																																		{
+																																			"name": " Macarthur Station Platform 2",
+																																			"children": [
+																																				{
+																																					"name": " Central Station Platform 22",
+																																					"children": [
+																																						{
+																																							"name": " Revesby Station Platform 2",
+																																							"children": [
+																																								{
+																																									"name": " East Hills Station Platform 1"
+																																								}
+																																							]
+																																						},
+																																						{
+																																							"name": " Redfern Station Platform 8",
+																																							"children": [
+																																								{
+																																									"name": " Bankstown Station Platform 2",
+																																									"children": [
+																																										{
+																																											"name": " Birrong Station Platform 2",
+																																											"children": [
+																																												{
+																																													"name": " Sefton Station Platform 2",
+																																													"children": [
+																																														{
+																																															"name": " Chester Hill Station Platform 2",
+																																															"children": [
+																																																{
+																																																	"name": " Leightonfield Station Platform 2",
+																																																	"children": [
+																																																		{
+																																																			"name": " Campsie Station Platform 2",
+																																																			"children": [
+																																																				{
+																																																					"name": " Marrickville Station Platform 2",
+																																																					"children": [
+																																																						{
+																																																							"name": " Sydenham Station Platform 2",
+																																																							"children": [
+																																																								{
+																																																									"name": " Lakemba Station Platform 2",
+																																																									"children": [
+																																																										{
+																																																											"name": " Villawood Station Platform 2"
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		}
+																																																	]
+																																																},
+																																																{
+																																																	"name": " Flemington Station Platform 4"
+																																																}
+																																															]
+																																														}
+																																													]
+																																												}
+																																											]
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				},
+																																				{
+																																					"name": " Glenfield Station Platform 1",
+																																					"children": [
+																																						{
+																																							"name": " Holsworthy Station Platform 1",
+																																							"children": [
+																																								{
+																																									"name": " East Hills Station Platform 2",
+																																									"children": [
+																																										{
+																																											"name": " Sydenham Station Platform 3"
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				},
+																																				{
+																																					"name": " Mittagong Station Platform 1",
+																																					"children": [
+																																						{
+																																							"name": " Campbelltown Station Platform 4",
+																																							"children": [
+																																								{
+																																									"name": " Exeter Station Platform 2"
+																																								}
+																																							]
+																																						}
+																																					]
+																																				}
+																																			]
+																																		}
+																																	]
+																																}
+																															]
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Central Station Platform 17",
+			"children": [
+				{
+					"name": " Liverpool Station Platform 2",
+					"children": [
+						{
+							"name": " Warwick Farm Station Platform 1",
+							"children": [
+								{
+									"name": " Cabramatta Station Platform 1",
+									"children": [
+										{
+											"name": " Carramar Station Platform 1",
+											"children": [
+												{
+													"name": " Villawood Station Platform 1",
+													"children": [
+														{
+															"name": " Leightonfield Station Platform 1",
+															"children": [
+																{
+																	"name": " Chester Hill Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Sefton Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Erskineville Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Leppington Station Platform 2",
+																							"children": [
+																								{
+																									"name": " Bankstown Station Platform 1",
+																									"children": [
+																										{
+																											"name": " Punchbowl Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Wiley Park Station Platform 1",
+																													"children": [
+																														{
+																															"name": " Lakemba Station Platform 1",
+																															"children": [
+																																{
+																																	"name": " Belmore Station Platform 1",
+																																	"children": [
+																																		{
+																																			"name": " Campsie Station Platform 1",
+																																			"children": [
+																																				{
+																																					"name": " Canterbury Station Platform 1",
+																																					"children": [
+																																						{
+																																							"name": " Hurlstone Park Station Platform 1",
+																																							"children": [
+																																								{
+																																									"name": " Dulwich Hill Station Platform 1",
+																																									"children": [
+																																										{
+																																											"name": " Marrickville Station Platform 1",
+																																											"children": [
+																																												{
+																																													"name": " Sydenham Station Platform 1",
+																																													"children": [
+																																														{
+																																															"name": " Redfern Station Platform 7",
+																																															"children": [
+																																																{
+																																																	"name": " Yagoona Station Platform 1",
+																																																	"children": [
+																																																		{
+																																																			"name": " Birrong Station Platform 1",
+																																																			"children": [
+																																																				{
+																																																					"name": " St Peters Station Platform 1",
+																																																					"children": [
+																																																						{
+																																																							"name": " Liverpool Station Platform 1",
+																																																							"children": [
+																																																								{
+																																																									"name": " Leppington Station Platform 3",
+																																																									"children": [
+																																																										{
+																																																											"name": " Leppington Station Platform 4",
+																																																											"children": [
+																																																												{
+																																																													"name": " Homebush Station Platform 4",
+																																																													"children": [
+																																																														{
+																																																															"name": " Macdonaldtown Station Platform 1",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Summer Hill Station Platform 2",
+																																																																	"children": [
+																																																																		{
+																																																																			"name": " Stanmore Station Platform 2",
+																																																																			"children": [
+																																																																				{
+																																																																					"name": " Lewisham Station Platform 1",
+																																																																					"children": [
+																																																																						{
+																																																																							"name": " Petersham Station Platform 1",
+																																																																							"children": [
+																																																																								{
+																																																																									"name": " Lidcombe Station Platform 1",
+																																																																									"children": [
+																																																																										{
+																																																																											"name": " Auburn Station Platform 1"
+																																																																										}
+																																																																									]
+																																																																								}
+																																																																							]
+																																																																						}
+																																																																					]
+																																																																				}
+																																																																			]
+																																																																		}
+																																																																	]
+																																																																}
+																																																															]
+																																																														},
+																																																														{
+																																																															"name": " Parramatta Station Platform 4",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Harris Park Station Platform 2"
+																																																																}
+																																																															]
+																																																														}
+																																																													]
+																																																												},
+																																																												{
+																																																													"name": " Seven Hills Station Platform 4"
+																																																												}
+																																																											]
+																																																										},
+																																																										{
+																																																											"name": " Granville Station Platform 3",
+																																																											"children": [
+																																																												{
+																																																													"name": " Merrylands Station Platform 1",
+																																																													"children": [
+																																																														{
+																																																															"name": " Strathfield Station Platform 7",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Lidcombe Station Platform 3",
+																																																																	"children": [
+																																																																		{
+																																																																			"name": " Auburn Station Platform 3",
+																																																																			"children": [
+																																																																				{
+																																																																					"name": " Ashfield Station Platform 3",
+																																																																					"children": [
+																																																																						{
+																																																																							"name": " Homebush Station Platform 6"
+																																																																						}
+																																																																					]
+																																																																				}
+																																																																			]
+																																																																		}
+																																																																	]
+																																																																}
+																																																															]
+																																																														}
+																																																													]
+																																																												},
+																																																												{
+																																																													"name": " Parramatta Station Platform 3",
+																																																													"children": [
+																																																														{
+																																																															"name": " Blacktown Station Platform 4",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Bathurst Station Platform 1",
+																																																																	"children": [
+																																																																		{
+																																																																			"name": " Central Station Platform 1",
+																																																																			"children": [
+																																																																				{
+																																																																					"name": " Eungai Station Platform 1",
+																																																																					"children": [
+																																																																						{
+																																																																							"name": " Nambucca Heads Station Platform 1"
+																																																																						}
+																																																																					]
+																																																																				}
+																																																																			]
+																																																																		},
+																																																																		{
+																																																																			"name": " Katoomba Station Platform 2",
+																																																																			"children": [
+																																																																				{
+																																																																					"name": " Leura Station Platform 2",
+																																																																					"children": [
+																																																																						{
+																																																																							"name": " Wentworth Falls Station Platform 2",
+																																																																							"children": [
+																																																																								{
+																																																																									"name": " Bullaburra Station Platform 2",
+																																																																									"children": [
+																																																																										{
+																																																																											"name": " Lawson Station Platform 2",
+																																																																											"children": [
+																																																																												{
+																																																																													"name": " Mount Victoria Station Platform 2"
+																																																																												}
+																																																																											]
+																																																																										}
+																																																																									]
+																																																																								}
+																																																																							]
+																																																																						}
+																																																																					]
+																																																																				}
+																																																																			]
+																																																																		},
+																																																																		{
+																																																																			"name": " Tarana Station Platform 1",
+																																																																			"children": [
+																																																																				{
+																																																																					"name": " Rydal Station Platform 1"
+																																																																				}
+																																																																			]
+																																																																		}
+																																																																	]
+																																																																},
+																																																																{
+																																																																	"name": " Westmead Station Platform 1"
+																																																																}
+																																																															]
+																																																														},
+																																																														{
+																																																															"name": " Central Station Platform 12"
+																																																														},
+																																																														{
+																																																															"name": " Toongabbie Station Platform 1",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Pendle Hill Station Platform 1",
+																																																																	"children": [
+																																																																		{
+																																																																			"name": " Wentworthville Station Platform 1"
+																																																																		}
+																																																																	]
+																																																																}
+																																																															]
+																																																														}
+																																																													]
+																																																												}
+																																																											]
+																																																										}
+																																																									]
+																																																								},
+																																																								{
+																																																									"name": " Casula Station Platform 1",
+																																																									"children": [
+																																																										{
+																																																											"name": " Croydon Station Platform 4"
+																																																										}
+																																																									]
+																																																								},
+																																																								{
+																																																									"name": " Central Station Platform 21",
+																																																									"children": [
+																																																										{
+																																																											"name": " Panania Station Platform 1",
+																																																											"children": [
+																																																												{
+																																																													"name": " Wolli Creek Station Platform 1",
+																																																													"children": [
+																																																														{
+																																																															"name": " International Station Platform 1",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Domestic Station Platform 1",
+																																																																	"children": [
+																																																																		{
+																																																																			"name": " Mascot Station Platform 1",
+																																																																			"children": [
+																																																																				{
+																																																																					"name": " Green Square Station Platform 1",
+																																																																					"children": [
+																																																																						{
+																																																																							"name": " Revesby Station Platform 1"
+																																																																						}
+																																																																					]
+																																																																				}
+																																																																			]
+																																																																		}
+																																																																	]
+																																																																}
+																																																															]
+																																																														}
+																																																													]
+																																																												}
+																																																											]
+																																																										}
+																																																									]
+																																																								},
+																																																								{
+																																																									"name": " Canley Vale Station Platform 1"
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		}
+																																																	]
+																																																}
+																																															]
+																																														}
+																																													]
+																																												}
+																																											]
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				},
+																																				{
+																																					"name": " Redfern Station Platform 9"
+																																				}
+																																			]
+																																		}
+																																	]
+																																}
+																															]
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": " Yennora Station Platform 1",
+											"children": [
+												{
+													"name": " Glenfield Station Platform 2",
+													"children": [
+														{
+															"name": " Newtown Station Platform 1",
+															"children": [
+																{
+																	"name": " Guildford Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Leppington Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Clyde Station Platform 4",
+																					"children": [
+																						{
+																							"name": " Flemington Station Platform 3",
+																							"children": [
+																								{
+																									"name": " Ashfield Station Platform 4"
+																								}
+																							]
+																						}
+																					]
+																				},
+																				{
+																					"name": " Edmondson Park Station Platform 2"
+																				}
+																			]
+																		},
+																		{
+																			"name": " Westmead Station Platform 4",
+																			"children": [
+																				{
+																					"name": " Granville Station Platform 2"
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												},
+												{
+													"name": " Wentworthville Station Platform 4"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": " Pendle Hill Station Platform 4"
+								}
+							]
+						},
+						{
+							"name": " Hurlstone Park Station Platform 2",
+							"children": [
+								{
+									"name": " Canterbury Station Platform 2",
+									"children": [
+										{
+											"name": " Belmore Station Platform 2",
+											"children": [
+												{
+													"name": " Punchbowl Station Platform 2",
+													"children": [
+														{
+															"name": " Yagoona Station Platform 2",
+															"children": [
+																{
+																	"name": " Dulwich Hill Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Wiley Park Station Platform 2",
+																			"children": [
+																				{
+																					"name": " Erskineville Station Platform 2"
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": " Rosehill Station Platform 1",
+							"children": [
+								{
+									"name": " Carlingford Station Platform 1",
+									"children": [
+										{
+											"name": " Rydalmere Station Platform 1",
+											"children": [
+												{
+													"name": " Dundas Station Platform 1",
+													"children": [
+														{
+															"name": " Camellia Station Platform 1",
+															"children": [
+																{
+																	"name": " Rosehill Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Telopea Station Platform 1"
+																		},
+																		{
+																			"name": " Clyde Station Platform 1"
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Central Station Platform 3",
+			"children": [
+				{
+					"name": " Fassifern Station Platform 2",
+					"children": [
+						{
+							"name": " Werris Creek Station Platform 1",
+							"children": [
+								{
+									"name": " Quirindi Station Platform 1",
+									"children": [
+										{
+											"name": " Willow Tree Station Platform 1",
+											"children": [
+												{
+													"name": " Murrurundi Station Platform 1",
+													"children": [
+														{
+															"name": " Scone Station Platform 1",
+															"children": [
+																{
+																	"name": " Aberdeen Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Muswellbrook Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Singleton Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Maitland Station Platform 4",
+																							"children": [
+																								{
+																									"name": " Hornsby Station Platform 5",
+																									"children": [
+																										{
+																											"name": " Strathfield Station Platform 3",
+																											"children": [
+																												{
+																													"name": " Broadmeadow Station Platform 2",
+																													"children": [
+																														{
+																															"name": " Wyong Station Platform 3",
+																															"children": [
+																																{
+																																	"name": " Gosford Station Platform 2",
+																																	"children": [
+																																		{
+																																			"name": " Brisbane (Roma St) Station Platform 2"
+																																		},
+																																		{
+																																			"name": " Berowra Station Platform 3",
+																																			"children": [
+																																				{
+																																					"name": " Hornsby Station Platform 2"
+																																				}
+																																			]
+																																		}
+																																	]
+																																}
+																															]
+																														},
+																														{
+																															"name": " Hamilton Station Platform 2"
+																														}
+																													]
+																												},
+																												{
+																													"name": " West Ryde Station Platform 3"
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": " Maitland Station Platform 3"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": " Booragul Station Platform 2",
+							"children": [
+								{
+									"name": " Teralba Station Platform 2",
+									"children": [
+										{
+											"name": " Cockle Creek Station Platform 2",
+											"children": [
+												{
+													"name": " Cardiff Station Platform 2",
+													"children": [
+														{
+															"name": " Kotara Station Platform 2",
+															"children": [
+																{
+																	"name": " Adamstown Station Platform 2"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Walcha Road Station Platform 1",
+			"children": [
+				{
+					"name": " Uralla Station Platform 1",
+					"children": [
+						{
+							"name": " Kootingal Station Platform 1",
+							"children": [
+								{
+									"name": " Armidale Station Platform 1",
+									"children": [
+										{
+											"name": " Tamworth Station Platform 1"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Canley Vale Station Platform 1",
+			"children": [
+				{
+					"name": " Fairfield Station Platform 1",
+					"children": [
+						{
+							"name": " Burwood Station Platform 5",
+							"children": [
+								{
+									"name": " Harris Park Station Platform 3"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Croydon Station Platform 4"
+		},
+		{
+			"name": "Macarthur Station Platform 1",
+			"children": [
+				{
+					"name": " Green Square Station Platform 2",
+					"children": [
+						{
+							"name": " Central Station Platform 23",
+							"children": [
+								{
+									"name": " Circular Quay Station Platform 2",
+									"children": [
+										{
+											"name": " St James Station Platform 2",
+											"children": [
+												{
+													"name": " Campbelltown Station Platform 3",
+													"children": [
+														{
+															"name": " Wynyard Station Platform 6",
+															"children": [
+																{
+																	"name": " Museum Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Leumeah Station Platform 2",
+																			"children": [
+																				{
+																					"name": " Holsworthy Station Platform 2",
+																					"children": [
+																						{
+																							"name": " Ingleburn Station Platform 2",
+																							"children": [
+																								{
+																									"name": " Macquarie Fields Station Platform 2",
+																									"children": [
+																										{
+																											"name": " Glenfield Station Platform 4",
+																											"children": [
+																												{
+																													"name": " Town Hall Station Platform 6",
+																													"children": [
+																														{
+																															"name": " East Hills Station Platform 3",
+																															"children": [
+																																{
+																																	"name": " Panania Station Platform 2",
+																																	"children": [
+																																		{
+																																			"name": " Revesby Station Platform 4",
+																																			"children": [
+																																				{
+																																					"name": " Wolli Creek Station Platform 2",
+																																					"children": [
+																																						{
+																																							"name": " International Station Platform 2",
+																																							"children": [
+																																								{
+																																									"name": " Minto Station Platform 2",
+																																									"children": [
+																																										{
+																																											"name": " Cabramatta Station Platform 2",
+																																											"children": [
+																																												{
+																																													"name": " Warwick Farm Station Platform 2",
+																																													"children": [
+																																														{
+																																															"name": " Museum Station Platform 1",
+																																															"children": [
+																																																{
+																																																	"name": " St James Station Platform 1",
+																																																	"children": [
+																																																		{
+																																																			"name": " Circular Quay Station Platform 1",
+																																																			"children": [
+																																																				{
+																																																					"name": " Liverpool Station Platform 3",
+																																																					"children": [
+																																																						{
+																																																							"name": " Carramar Station Platform 2",
+																																																							"children": [
+																																																								{
+																																																									"name": " Wynyard Station Platform 5",
+																																																									"children": [
+																																																										{
+																																																											"name": " Town Hall Station Platform 1",
+																																																											"children": [
+																																																												{
+																																																													"name": " Central Station Platform 19",
+																																																													"children": [
+																																																														{
+																																																															"name": " Redfern Station Platform 3"
+																																																														}
+																																																													]
+																																																												}
+																																																											]
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		}
+																																																	]
+																																																}
+																																															]
+																																														}
+																																													]
+																																												},
+																																												{
+																																													"name": " Regents Park Station Platform 2"
+																																												},
+																																												{
+																																													"name": " Canley Vale Station Platform 2",
+																																													"children": [
+																																														{
+																																															"name": " Yennora Station Platform 2"
+																																														},
+																																														{
+																																															"name": " Fairfield Station Platform 2"
+																																														}
+																																													]
+																																												}
+																																											]
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				}
+																																			]
+																																		}
+																																	]
+																																},
+																																{
+																																	"name": " St Peters Station Platform 2"
+																																}
+																															]
+																														},
+																														{
+																															"name": " Redfern Station Platform 10"
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								},
+																								{
+																									"name": " Glenfield Station Platform 3",
+																									"children": [
+																										{
+																											"name": " Guildford Station Platform 2"
+																										}
+																									]
+																								}
+																							]
+																						},
+																						{
+																							"name": " Sydenham Station Platform 4"
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														},
+														{
+															"name": " Liverpool Station Platform 4",
+															"children": [
+																{
+																	"name": " Auburn Station Platform 4",
+																	"children": [
+																		{
+																			"name": " Casula Station Platform 2"
+																		}
+																	]
+																},
+																{
+																	"name": " Clyde Station Platform 5"
+																}
+															]
+														},
+														{
+															"name": " Kiama Station Platform 1",
+															"children": [
+																{
+																	"name": " Lidcombe Station Platform 0",
+																	"children": [
+																		{
+																			"name": " Olympic Park Station Platform 2"
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": " Leumeah Station Platform 1",
+					"children": [
+						{
+							"name": " Minto Station Platform 1",
+							"children": [
+								{
+									"name": " Ingleburn Station Platform 1",
+									"children": [
+										{
+											"name": " Macquarie Fields Station Platform 1"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Warrawee Station Platform 1",
+			"children": [
+				{
+					"name": " Gordon Station Platform 1",
+					"children": [
+						{
+							"name": " Wollstonecraft Station Platform 1",
+							"children": [
+								{
+									"name": " St Leonards Station Platform 2",
+									"children": [
+										{
+											"name": " Artarmon Station Platform 1",
+											"children": [
+												{
+													"name": " Chatswood Station Platform 1",
+													"children": [
+														{
+															"name": " Central Station Platform 18",
+															"children": [
+																{
+																	"name": " Town Hall Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Wynyard Station Platform 3",
+																			"children": [
+																				{
+																					"name": " Pymble Station Platform 1",
+																					"children": [
+																						{
+																							"name": " North Sydney Station Platform 1",
+																							"children": [
+																								{
+																									"name": " Milsons Point Station Platform 1",
+																									"children": [
+																										{
+																											"name": " Wahroonga Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Waitara Station Platform 1",
+																													"children": [
+																														{
+																															"name": " Hornsby Station Platform 1",
+																															"children": [
+																																{
+																																	"name": " Roseville Station Platform 1",
+																																	"children": [
+																																		{
+																																			"name": " Lindfield Station Platform 1",
+																																			"children": [
+																																				{
+																																					"name": " Killara Station Platform 1",
+																																					"children": [
+																																						{
+																																							"name": " Waverton Station Platform 1",
+																																							"children": [
+																																								{
+																																									"name": " Turramurra Station Platform 1",
+																																									"children": [
+																																										{
+																																											"name": " Gordon Station Platform 2",
+																																											"children": [
+																																												{
+																																													"name": " Berowra Station Platform 2",
+																																													"children": [
+																																														{
+																																															"name": " Mount Colah Station Platform 1",
+																																															"children": [
+																																																{
+																																																	"name": " Asquith Station Platform 1",
+																																																	"children": [
+																																																		{
+																																																			"name": " Mount Kuring-gai Station Platform 1",
+																																																			"children": [
+																																																				{
+																																																					"name": " Lindfield Station Platform 2",
+																																																					"children": [
+																																																						{
+																																																							"name": " North Sydney Station Platform 2",
+																																																							"children": [
+																																																								{
+																																																									"name": " Hornsby Station Platform 3",
+																																																									"children": [
+																																																										{
+																																																											"name": " North Sydney Station Platform 3",
+																																																											"children": [
+																																																												{
+																																																													"name": " Richmond Station Platform 2",
+																																																													"children": [
+																																																														{
+																																																															"name": " Riverstone Station Platform 1",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Windsor Station Platform 1",
+																																																																	"children": [
+																																																																		{
+																																																																			"name": " Clarendon Station Platform 2",
+																																																																			"children": [
+																																																																				{
+																																																																					"name": " Marayong Station Platform 2",
+																																																																					"children": [
+																																																																						{
+																																																																							"name": " Riverstone Station Platform 2"
+																																																																						}
+																																																																					]
+																																																																				}
+																																																																			]
+																																																																		}
+																																																																	]
+																																																																}
+																																																															]
+																																																														},
+																																																														{
+																																																															"name": " Quakers Hill Station Platform 2"
+																																																														}
+																																																													]
+																																																												}
+																																																											]
+																																																										},
+																																																										{
+																																																											"name": " Woy Woy Station Platform 1"
+																																																										},
+																																																										{
+																																																											"name": " Burwood Station Platform 1"
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		}
+																																																	]
+																																																}
+																																															]
+																																														},
+																																														{
+																																															"name": " Woy Woy Station Platform 2"
+																																														}
+																																													]
+																																												},
+																																												{
+																																													"name": " Newcastle Interchange Station Platform 3",
+																																													"children": [
+																																														{
+																																															"name": " Central Station Platform 10",
+																																															"children": [
+																																																{
+																																																	"name": " Newcastle Interchange Station Platform 2",
+																																																	"children": [
+																																																		{
+																																																			"name": " Gosford Station Platform 3"
+																																																		},
+																																																		{
+																																																			"name": " Cowan Station Platform 2",
+																																																			"children": [
+																																																				{
+																																																					"name": " Hawkesbury River Station Platform 2",
+																																																					"children": [
+																																																						{
+																																																							"name": " Koolewong Station Platform 2",
+																																																							"children": [
+																																																								{
+																																																									"name": " Wondabyne Station Platform 2",
+																																																									"children": [
+																																																										{
+																																																											"name": " Point Clare Station Platform 2"
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		}
+																																																	]
+																																																},
+																																																{
+																																																	"name": " Ourimbah Station Platform 2",
+																																																	"children": [
+																																																		{
+																																																			"name": " Awaba Station Platform 2",
+																																																			"children": [
+																																																				{
+																																																					"name": " Lisarow Station Platform 2",
+																																																					"children": [
+																																																						{
+																																																							"name": " Tascott Station Platform 2",
+																																																							"children": [
+																																																								{
+																																																									"name": " Narara Station Platform 2",
+																																																									"children": [
+																																																										{
+																																																											"name": " Niagara Park Station Platform 2"
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		},
+																																																		{
+																																																			"name": " Tuggerah Station Platform 2"
+																																																		}
+																																																	]
+																																																}
+																																															]
+																																														},
+																																														{
+																																															"name": " Gosford Station Platform 1",
+																																															"children": [
+																																																{
+																																																	"name": " Narara Station Platform 1",
+																																																	"children": [
+																																																		{
+																																																			"name": " Ourimbah Station Platform 1",
+																																																			"children": [
+																																																				{
+																																																					"name": " Tuggerah Station Platform 1",
+																																																					"children": [
+																																																						{
+																																																							"name": " Wyong Station Platform 2",
+																																																							"children": [
+																																																								{
+																																																									"name": " Warnervale Station Platform 1",
+																																																									"children": [
+																																																										{
+																																																											"name": " Awaba Station Platform 1"
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				},
+																																																				{
+																																																					"name": " Lisarow Station Platform 1",
+																																																					"children": [
+																																																						{
+																																																							"name": " Niagara Park Station Platform 1",
+																																																							"children": [
+																																																								{
+																																																									"name": " Epping Station Platform 1",
+																																																									"children": [
+																																																										{
+																																																											"name": " Eastwood Station Platform 1",
+																																																											"children": [
+																																																												{
+																																																													"name": " West Ryde Station Platform 1",
+																																																													"children": [
+																																																														{
+																																																															"name": " Cheltenham Station Platform 1",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Rhodes Station Platform 1"
+																																																																}
+																																																															]
+																																																														}
+																																																													]
+																																																												}
+																																																											]
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		}
+																																																	]
+																																																}
+																																															]
+																																														},
+																																														{
+																																															"name": " Pennant Hills Station Platform 1",
+																																															"children": [
+																																																{
+																																																	"name": " Beecroft Station Platform 1",
+																																																	"children": [
+																																																		{
+																																																			"name": " Normanhurst Station Platform 1"
+																																																		}
+																																																	]
+																																																}
+																																															]
+																																														}
+																																													]
+																																												},
+																																												{
+																																													"name": " Killara Station Platform 2",
+																																													"children": [
+																																														{
+																																															"name": " Waverton Station Platform 2",
+																																															"children": [
+																																																{
+																																																	"name": " St Leonards Station Platform 3",
+																																																	"children": [
+																																																		{
+																																																			"name": " Artarmon Station Platform 2",
+																																																			"children": [
+																																																				{
+																																																					"name": " Chatswood Station Platform 4",
+																																																					"children": [
+																																																						{
+																																																							"name": " Roseville Station Platform 2",
+																																																							"children": [
+																																																								{
+																																																									"name": " Wollstonecraft Station Platform 2",
+																																																									"children": [
+																																																										{
+																																																											"name": " Gordon Station Platform 3",
+																																																											"children": [
+																																																												{
+																																																													"name": " Pymble Station Platform 2"
+																																																												}
+																																																											]
+																																																										},
+																																																										{
+																																																											"name": " Waitara Station Platform 2"
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		},
+																																																		{
+																																																			"name": " Turramurra Station Platform 2",
+																																																			"children": [
+																																																				{
+																																																					"name": " Warrawee Station Platform 2",
+																																																					"children": [
+																																																						{
+																																																							"name": " Wahroonga Station Platform 2"
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		}
+																																																	]
+																																																}
+																																															]
+																																														}
+																																													]
+																																												}
+																																											]
+																																										},
+																																										{
+																																											"name": " Warrawee Station Platform 1"
+																																										}
+																																									]
+																																								},
+																																								{
+																																									"name": " Point Clare Station Platform 1",
+																																									"children": [
+																																										{
+																																											"name": " Wondabyne Station Platform 1",
+																																											"children": [
+																																												{
+																																													"name": " Hawkesbury River Station Platform 1",
+																																													"children": [
+																																														{
+																																															"name": " Cowan Station Platform 1",
+																																															"children": [
+																																																{
+																																																	"name": " Wyee Station Platform 1",
+																																																	"children": [
+																																																		{
+																																																			"name": " Cockle Creek Station Platform 1",
+																																																			"children": [
+																																																				{
+																																																					"name": " Teralba Station Platform 1",
+																																																					"children": [
+																																																						{
+																																																							"name": " Morisset Station Platform 1",
+																																																							"children": [
+																																																								{
+																																																									"name": " Hamilton Station Platform 1",
+																																																									"children": [
+																																																										{
+																																																											"name": " Broadmeadow Station Platform 1",
+																																																											"children": [
+																																																												{
+																																																													"name": " Adamstown Station Platform 1",
+																																																													"children": [
+																																																														{
+																																																															"name": " Booragul Station Platform 1",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Kotara Station Platform 1",
+																																																																	"children": [
+																																																																		{
+																																																																			"name": " Cardiff Station Platform 1",
+																																																																			"children": [
+																																																																				{
+																																																																					"name": " Fassifern Station Platform 1",
+																																																																					"children": [
+																																																																						{
+																																																																							"name": " Dora Creek Station Platform 1"
+																																																																						}
+																																																																					]
+																																																																				}
+																																																																			]
+																																																																		}
+																																																																	]
+																																																																}
+																																																															]
+																																																														}
+																																																													]
+																																																												}
+																																																											]
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		}
+																																																	]
+																																																}
+																																															]
+																																														}
+																																													]
+																																												}
+																																											]
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				},
+																																				{
+																																					"name": " Denistone Station Platform 3",
+																																					"children": [
+																																						{
+																																							"name": " North Strathfield Station Platform 3",
+																																							"children": [
+																																								{
+																																									"name": " Concord West Station Platform 4",
+																																									"children": [
+																																										{
+																																											"name": " Meadowbank Station Platform 2"
+																																										}
+																																									]
+																																								}
+																																							]
+																																						},
+																																						{
+																																							"name": " Cheltenham Station Platform 2",
+																																							"children": [
+																																								{
+																																									"name": " Pennant Hills Station Platform 2",
+																																									"children": [
+																																										{
+																																											"name": " Thornleigh Station Platform 3"
+																																										}
+																																									]
+																																								}
+																																							]
+																																						}
+																																					]
+																																				}
+																																			]
+																																		}
+																																	]
+																																}
+																															]
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								},
+																								{
+																									"name": " Normanhurst Station Platform 2",
+																									"children": [
+																										{
+																											"name": " Concord West Station Platform 3"
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		},
+																		{
+																			"name": " Koolewong Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Tascott Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Berowra Station Platform 1"
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																},
+																{
+																	"name": " Ashfield Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Burwood Station Platform 4",
+																			"children": [
+																				{
+																					"name": " Epping Station Platform 3",
+																					"children": [
+																						{
+																							"name": " Beecroft Station Platform 2"
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Regents Park Station Platform 2",
+			"children": [
+				{
+					"name": " Berala Station Platform 2",
+					"children": [
+						{
+							"name": " Lidcombe Station Platform 4",
+							"children": [
+								{
+									"name": " Strathfield Station Platform 1",
+									"children": [
+										{
+											"name": " Rhodes Station Platform 3",
+											"children": [
+												{
+													"name": " Denistone Station Platform 4",
+													"children": [
+														{
+															"name": " Eastwood Station Platform 4"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": " Homebush Station Platform 7",
+									"children": [
+										{
+											"name": " Strathfield Station Platform 8",
+											"children": [
+												{
+													"name": " Burwood Station Platform 6",
+													"children": [
+														{
+															"name": " Redfern Station Platform 6",
+															"children": [
+																{
+																	"name": " Macdonaldtown Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Newtown Station Platform 2",
+																			"children": [
+																				{
+																					"name": " Stanmore Station Platform 3",
+																					"children": [
+																						{
+																							"name": " Petersham Station Platform 2",
+																							"children": [
+																								{
+																									"name": " Lewisham Station Platform 2",
+																									"children": [
+																										{
+																											"name": " Summer Hill Station Platform 3",
+																											"children": [
+																												{
+																													"name": " Ashfield Station Platform 5"
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																},
+																{
+																	"name": " Redfern Station Platform 4",
+																	"children": [
+																		{
+																			"name": " Merrylands Station Platform 2"
+																		},
+																		{
+																			"name": " Rooty Hill Station Platform 4",
+																			"children": [
+																				{
+																					"name": " Doonside Station Platform 4",
+																					"children": [
+																						{
+																							"name": " Blacktown Station Platform 7",
+																							"children": [
+																								{
+																									"name": " Mount Druitt Station Platform 4"
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": " Lidcombe Station Platform 2",
+											"children": [
+												{
+													"name": " Auburn Station Platform 2",
+													"children": [
+														{
+															"name": " Clyde Station Platform 3"
+														}
+													]
+												}
+											]
+										},
+										{
+											"name": " Harris Park Station Platform 4",
+											"children": [
+												{
+													"name": " Toongabbie Station Platform 4"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Broadmeadows Station Platform 3"
+		},
+		{
+			"name": "Central Station Platform 20"
+		},
+		{
+			"name": "Medlow Bath Station Platform 1",
+			"children": [
+				{
+					"name": " Katoomba Station Platform 1",
+					"children": [
+						{
+							"name": " Leura Station Platform 1",
+							"children": [
+								{
+									"name": " Blackheath Station Platform 1",
+									"children": [
+										{
+											"name": " Woodford Station Platform 1",
+											"children": [
+												{
+													"name": " Bullaburra Station Platform 1",
+													"children": [
+														{
+															"name": " Lawson Station Platform 1",
+															"children": [
+																{
+																	"name": " Hazelbrook Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Mount Victoria Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Linden Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Faulconbridge Station Platform 1",
+																							"children": [
+																								{
+																									"name": " Springwood Station Platform 1",
+																									"children": [
+																										{
+																											"name": " Valley Heights Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Warrimoo Station Platform 1",
+																													"children": [
+																														{
+																															"name": " Blaxland Station Platform 1",
+																															"children": [
+																																{
+																																	"name": " Glenbrook Station Platform 1",
+																																	"children": [
+																																		{
+																																			"name": " Wentworth Falls Station Platform 1"
+																																		}
+																																	]
+																																}
+																															]
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				},
+																				{
+																					"name": " Woodford Station Platform 2",
+																					"children": [
+																						{
+																							"name": " Hazelbrook Station Platform 2"
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Strathfield Station Platform 3"
+		},
+		{
+			"name": "Liverpool Station Platform 3",
+			"children": [
+				{
+					"name": " Croydon Station Platform 5"
+				}
+			]
+		},
+		{
+			"name": "Dubbo Station Platform 1",
+			"children": [
+				{
+					"name": " Stuart Town Station Platform 1",
+					"children": [
+						{
+							"name": " Wellington Station Platform 1",
+							"children": [
+								{
+									"name": " Blacktown Station Platform 6",
+									"children": [
+										{
+											"name": " Geurie Station Platform 1"
+										},
+										{
+											"name": " Strathfield Station Platform 6",
+											"children": [
+												{
+													"name": " Emu Plains Station Platform 2"
+												},
+												{
+													"name": " Homebush Station Platform 5"
+												}
+											]
+										},
+										{
+											"name": " St Marys Station Platform 3",
+											"children": [
+												{
+													"name": " Mount Druitt Station Platform 3",
+													"children": [
+														{
+															"name": " Rooty Hill Station Platform 3",
+															"children": [
+																{
+																	"name": " Doonside Station Platform 3"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Lidcombe Station Platform 5",
+			"children": [
+				{
+					"name": " Berala Station Platform 1",
+					"children": [
+						{
+							"name": " Regents Park Station Platform 1"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Villawood Station Platform 2"
+		},
+		{
+			"name": "Lithgow Station Platform 2"
+		},
+		{
+			"name": "Yagoona Station Platform 2"
+		},
+		{
+			"name": "Wynyard Station Platform 5"
+		},
+		{
+			"name": "Redfern Station Platform 5"
+		},
+		{
+			"name": "Sydenham Station Platform 5",
+			"children": [
+				{
+					"name": " Mortdale Station Platform 1",
+					"children": [
+						{
+							"name": " Penshurst Station Platform 1",
+							"children": [
+								{
+									"name": " Wolli Creek Station Platform 3",
+									"children": [
+										{
+											"name": " Hurstville Station Platform 3",
+											"children": [
+												{
+													"name": " Bondi Junction Station Platform 1",
+													"children": [
+														{
+															"name": " Edgecliff Station Platform 2",
+															"children": [
+																{
+																	"name": " Kings Cross Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Martin Place Station Platform 2",
+																			"children": [
+																				{
+																					"name": " Town Hall Station Platform 5",
+																					"children": [
+																						{
+																							"name": " Redfern Station Platform 11",
+																							"children": [
+																								{
+																									"name": " Central Station Platform 24",
+																									"children": [
+																										{
+																											"name": " Engadine Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Loftus Station Platform 1",
+																													"children": [
+																														{
+																															"name": " Heathcote Station Platform 1",
+																															"children": [
+																																{
+																																	"name": " Sutherland Station Platform 1",
+																																	"children": [
+																																		{
+																																			"name": " Jannali Station Platform 1",
+																																			"children": [
+																																				{
+																																					"name": " Bondi Junction Station Platform 2",
+																																					"children": [
+																																						{
+																																							"name": " Tempe Station Platform 3",
+																																							"children": [
+																																								{
+																																									"name": " Rockdale Station Platform 4",
+																																									"children": [
+																																										{
+																																											"name": " Kogarah Station Platform 3",
+																																											"children": [
+																																												{
+																																													"name": " Carlton Station Platform 3",
+																																													"children": [
+																																														{
+																																															"name": " Allawah Station Platform 3",
+																																															"children": [
+																																																{
+																																																	"name": " Banksia Station Platform 3",
+																																																	"children": [
+																																																		{
+																																																			"name": " Arncliffe Station Platform 3",
+																																																			"children": [
+																																																				{
+																																																					"name": " Arncliffe Station Platform 1",
+																																																					"children": [
+																																																						{
+																																																							"name": " Banksia Station Platform 1",
+																																																							"children": [
+																																																								{
+																																																									"name": " Hurstville Station Platform 2",
+																																																									"children": [
+																																																										{
+																																																											"name": " Rockdale Station Platform 2",
+																																																											"children": [
+																																																												{
+																																																													"name": " Kogarah Station Platform 1",
+																																																													"children": [
+																																																														{
+																																																															"name": " Allawah Station Platform 1",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Carlton Station Platform 1",
+																																																																	"children": [
+																																																																		{
+																																																																			"name": " Waterfall Station Platform 2",
+																																																																			"children": [
+																																																																				{
+																																																																					"name": " Hurstville Station Platform 1",
+																																																																					"children": [
+																																																																						{
+																																																																							"name": " Waterfall Station Platform 1",
+																																																																							"children": [
+																																																																								{
+																																																																									"name": " Como Station Platform 1",
+																																																																									"children": [
+																																																																										{
+																																																																											"name": " Oatley Station Platform 1",
+																																																																											"children": [
+																																																																												{
+																																																																													"name": " St Peters Station Platform 3",
+																																																																													"children": [
+																																																																														{
+																																																																															"name": " Erskineville Station Platform 3",
+																																																																															"children": [
+																																																																																{
+																																																																																	"name": " Sutherland Station Platform 3",
+																																																																																	"children": [
+																																																																																		{
+																																																																																			"name": " Mortdale Station Platform 2",
+																																																																																			"children": [
+																																																																																				{
+																																																																																					"name": " Helensburgh Station Platform 1",
+																																																																																					"children": [
+																																																																																						{
+																																																																																							"name": " Wollongong Station Platform 1",
+																																																																																							"children": [
+																																																																																								{
+																																																																																									"name": " North Wollongong Station Platform 1",
+																																																																																									"children": [
+																																																																																										{
+																																																																																											"name": " Bombo Station Platform 1",
+																																																																																											"children": [
+																																																																																												{
+																																																																																													"name": " Minnamurra Station Platform 1",
+																																																																																													"children": [
+																																																																																														{
+																																																																																															"name": " Albion Park Station Platform 1",
+																																																																																															"children": [
+																																																																																																{
+																																																																																																	"name": " Dapto Station Platform 2",
+																																																																																																	"children": [
+																																																																																																		{
+																																																																																																			"name": " Kiama Station Platform 2",
+																																																																																																			"children": [
+																																																																																																				{
+																																																																																																					"name": " Shellharbour Junction Station Platform 2",
+																																																																																																					"children": [
+																																																																																																						{
+																																																																																																							"name": " Oak Flats Station Platform 1"
+																																																																																																						},
+																																																																																																						{
+																																																																																																							"name": " Unanderra Station Platform 1",
+																																																																																																							"children": [
+																																																																																																								{
+																																																																																																									"name": " Albion Park Station Platform 2"
+																																																																																																								}
+																																																																																																							]
+																																																																																																						}
+																																																																																																					]
+																																																																																																				}
+																																																																																																			]
+																																																																																																		}
+																																																																																																	]
+																																																																																																}
+																																																																																															]
+																																																																																														}
+																																																																																													]
+																																																																																												}
+																																																																																											]
+																																																																																										}
+																																																																																									]
+																																																																																								}
+																																																																																							]
+																																																																																						}
+																																																																																					]
+																																																																																				},
+																																																																																				{
+																																																																																					"name": " Allawah Station Platform 4"
+																																																																																				}
+																																																																																			]
+																																																																																		},
+																																																																																		{
+																																																																																			"name": " Lidcombe Station Platform 5"
+																																																																																		},
+																																																																																		{
+																																																																																			"name": " Woolooware Station Platform 2",
+																																																																																			"children": [
+																																																																																				{
+																																																																																					"name": " Oatley Station Platform 2",
+																																																																																					"children": [
+																																																																																						{
+																																																																																							"name": " Redfern Station Platform 12",
+																																																																																							"children": [
+																																																																																								{
+																																																																																									"name": " Central Station Platform 25",
+																																																																																									"children": [
+																																																																																										{
+																																																																																											"name": " Jannali Station Platform 2",
+																																																																																											"children": [
+																																																																																												{
+																																																																																													"name": " Town Hall Station Platform 4",
+																																																																																													"children": [
+																																																																																														{
+																																																																																															"name": " Martin Place Station Platform 1"
+																																																																																														},
+																																																																																														{
+																																																																																															"name": " Arncliffe Station Platform 2"
+																																																																																														}
+																																																																																													]
+																																																																																												}
+																																																																																											]
+																																																																																										}
+																																																																																									]
+																																																																																								}
+																																																																																							]
+																																																																																						}
+																																																																																					]
+																																																																																				}
+																																																																																			]
+																																																																																		}
+																																																																																	]
+																																																																																}
+																																																																															]
+																																																																														}
+																																																																													]
+																																																																												}
+																																																																											]
+																																																																										}
+																																																																									]
+																																																																								}
+																																																																							]
+																																																																						}
+																																																																					]
+																																																																				},
+																																																																				{
+																																																																					"name": " Engadine Station Platform 2"
+																																																																				},
+																																																																				{
+																																																																					"name": " Fairy Meadow Station Platform 2",
+																																																																					"children": [
+																																																																						{
+																																																																							"name": " Coledale Station Platform 2",
+																																																																							"children": [
+																																																																								{
+																																																																									"name": " Austinmer Station Platform 2",
+																																																																									"children": [
+																																																																										{
+																																																																											"name": " Bulli Station Platform 2",
+																																																																											"children": [
+																																																																												{
+																																																																													"name": " Woonona Station Platform 2",
+																																																																													"children": [
+																																																																														{
+																																																																															"name": " North Wollongong Station Platform 2",
+																																																																															"children": [
+																																																																																{
+																																																																																	"name": " Thirroul Station Platform 2",
+																																																																																	"children": [
+																																																																																		{
+																																																																																			"name": " Towradgi Station Platform 2",
+																																																																																			"children": [
+																																																																																				{
+																																																																																					"name": " Wollongong Station Platform 2",
+																																																																																					"children": [
+																																																																																						{
+																																																																																							"name": " Helensburgh Station Platform 2",
+																																																																																							"children": [
+																																																																																								{
+																																																																																									"name": " Bellambi Station Platform 2",
+																																																																																									"children": [
+																																																																																										{
+																																																																																											"name": " Port Kembla North Station Platform 1",
+																																																																																											"children": [
+																																																																																												{
+																																																																																													"name": " Port Kembla Station Platform 1",
+																																																																																													"children": [
+																																																																																														{
+																																																																																															"name": " Corrimal Station Platform 2",
+																																																																																															"children": [
+																																																																																																{
+																																																																																																	"name": " Stanwell Park Station Platform 2",
+																																																																																																	"children": [
+																																																																																																		{
+																																																																																																			"name": " Otford Station Platform 2"
+																																																																																																		}
+																																																																																																	]
+																																																																																																}
+																																																																																															]
+																																																																																														}
+																																																																																													]
+																																																																																												}
+																																																																																											]
+																																																																																										}
+																																																																																									]
+																																																																																								}
+																																																																																							]
+																																																																																						}
+																																																																																					]
+																																																																																				}
+																																																																																			]
+																																																																																		}
+																																																																																	]
+																																																																																}
+																																																																															]
+																																																																														}
+																																																																													]
+																																																																												}
+																																																																											]
+																																																																										}
+																																																																									]
+																																																																								}
+																																																																							]
+																																																																						}
+																																																																					]
+																																																																				}
+																																																																			]
+																																																																		}
+																																																																	]
+																																																																}
+																																																															]
+																																																														}
+																																																													]
+																																																												}
+																																																											]
+																																																										},
+																																																										{
+																																																											"name": " Allawah Station Platform 2",
+																																																											"children": [
+																																																												{
+																																																													"name": " Carlton Station Platform 2",
+																																																													"children": [
+																																																														{
+																																																															"name": " Kogarah Station Platform 2",
+																																																															"children": [
+																																																																{
+																																																																	"name": " Rockdale Station Platform 3"
+																																																																}
+																																																															]
+																																																														}
+																																																													]
+																																																												}
+																																																											]
+																																																										}
+																																																									]
+																																																								}
+																																																							]
+																																																						}
+																																																					]
+																																																				}
+																																																			]
+																																																		}
+																																																	]
+																																																}
+																																															]
+																																														}
+																																													]
+																																												}
+																																											]
+																																										}
+																																									]
+																																								}
+																																							]
+																																						},
+																																						{
+																																							"name": " Kings Cross Station Platform 1"
+																																						}
+																																					]
+																																				}
+																																			]
+																																		}
+																																	]
+																																}
+																															]
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														},
+														{
+															"name": " Woolooware Station Platform 1",
+															"children": [
+																{
+																	"name": " Caringbah Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Miranda Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Gymea Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Kirrawee Station Platform 1",
+																							"children": [
+																								{
+																									"name": " Cronulla Station Platform 2",
+																									"children": [
+																										{
+																											"name": " Edgecliff Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Caringbah Station Platform 2",
+																													"children": [
+																														{
+																															"name": " Miranda Station Platform 2",
+																															"children": [
+																																{
+																																	"name": " Gymea Station Platform 2",
+																																	"children": [
+																																		{
+																																			"name": " Kirrawee Station Platform 2"
+																																		}
+																																	]
+																																}
+																															]
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														},
+														{
+															"name": " Coniston Station Platform 1",
+															"children": [
+																{
+																	"name": " Unanderra Station Platform 2",
+																	"children": [
+																		{
+																			"name": " Dapto Station Platform 3",
+																			"children": [
+																				{
+																					"name": " Thirroul Station Platform 1"
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": " Cronulla Station Platform 1",
+									"children": [
+										{
+											"name": " Sutherland Station Platform 2"
+										},
+										{
+											"name": " Como Station Platform 2",
+											"children": [
+												{
+													"name": " Carlton Station Platform 4",
+													"children": [
+														{
+															"name": " Penshurst Station Platform 2"
+														}
+													]
+												},
+												{
+													"name": " Heathcote Station Platform 2",
+													"children": [
+														{
+															"name": " Hurstville Station Platform 4",
+															"children": [
+																{
+																	"name": " Loftus Station Platform 2"
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": " Tempe Station Platform 4",
+							"children": [
+								{
+									"name": " Banksia Station Platform 4",
+									"children": [
+										{
+											"name": " Arncliffe Station Platform 4"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Mortdale Station Platform 1",
+			"children": [
+				{
+					"name": " Sydenham Station Platform 5"
+				}
+			]
+		},
+		{
+			"name": "Casino Station Platform 1",
+			"children": [
+				{
+					"name": " Grafton Station Platform 1",
+					"children": [
+						{
+							"name": " Coffs Harbour Station Platform 1",
+							"children": [
+								{
+									"name": " Sawtell Station Platform 1",
+									"children": [
+										{
+											"name": " Urunga Station Platform 1",
+											"children": [
+												{
+													"name": " Macksville Station Platform 1",
+													"children": [
+														{
+															"name": " Kempsey Station Platform 1",
+															"children": [
+																{
+																	"name": " Wauchope Station Platform 1",
+																	"children": [
+																		{
+																			"name": " Kendall Station Platform 1",
+																			"children": [
+																				{
+																					"name": " Taree Station Platform 1",
+																					"children": [
+																						{
+																							"name": " Wingham Station Platform 1",
+																							"children": [
+																								{
+																									"name": " Gloucester Station Platform 1",
+																									"children": [
+																										{
+																											"name": " Dungog Station Platform 1",
+																											"children": [
+																												{
+																													"name": " Maitland Station Platform 2",
+																													"children": [
+																														{
+																															"name": " Kyogle Station Platform 1"
+																														}
+																													]
+																												}
+																											]
+																										}
+																									]
+																								}
+																							]
+																						}
+																					]
+																				}
+																			]
+																		}
+																	]
+																}
+															]
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Fairfield Station Platform 2"
+		},
+		{
+			"name": "Mittagong Station Platform 1",
+			"children": [
+				{
+					"name": " Bowral Station Platform 1"
+				}
+			]
+		},
+		{
+			"name": "Tahmoor Station Platform 1",
+			"children": [
+				{
+					"name": " Menangle Park Station Platform 1",
+					"children": [
+						{
+							"name": " Menangle Station Platform 1",
+							"children": [
+								{
+									"name": " Bargo Station Platform 1",
+									"children": [
+										{
+											"name": " Douglas Park Station Platform 1",
+											"children": [
+												{
+													"name": " Yerrinbool Station Platform 1"
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Warwick Farm Station Platform 2"
+		},
+		{
+			"name": "St James Station Platform 1"
+		},
+		{
+			"name": "Lewisham Station Platform 2"
+		},
+		{
+			"name": "Burwood Station Platform 6"
+		},
+		{
+			"name": "Central Station Platform 18"
+		},
+		{
+			"name": "Strathfield Station Platform 4"
+		},
+		{
+			"name": "Killara Station Platform 1"
+		},
+		{
+			"name": "Pendle Hill Station Platform 1"
+		},
+		{
+			"name": "Regents Park Station Platform 1"
+		},
+		{
+			"name": "Sydenham Station Platform 1"
+		},
+		{
+			"name": "St James Station Platform 2"
+		},
+		{
+			"name": "Clyde Station Platform 1"
+		},
+		{
+			"name": "Carlingford Station Platform 1"
+		},
+		{
+			"name": "Hurstville Station Platform 4",
+			"children": [
+				{
+					"name": " Kogarah Station Platform 4",
+					"children": [
+						{
+							"name": " Rockdale Station Platform 5",
+							"children": [
+								{
+									"name": " Wolli Creek Station Platform 4",
+									"children": [
+										{
+											"name": " Sydenham Station Platform 6"
+										},
+										{
+											"name": " Banksia Station Platform 2"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Edgecliff Station Platform 1"
+		},
+		{
+			"name": "Seven Hills Station Platform 4"
+		},
+		{
+			"name": "Schofields Station Platform 1"
+		},
+		{
+			"name": "Edgecliff Station Platform 2"
+		},
+		{
+			"name": "Tahmoor Station Platform 2"
+		},
+		{
+			"name": "Woy Woy Station Platform 1"
+		},
+		{
+			"name": "Macarthur Station Platform 2"
+		},
+		{
+			"name": "Dora Creek Station Platform 1"
+		},
+		{
+			"name": "Strathfield Station Platform 1"
+		},
+		{
+			"name": "Lidcombe Station Platform 0",
+			"children": [
+				{
+					"name": " Olympic Park Station Platform 3"
+				}
+			]
+		},
+		{
+			"name": "Strathfield Station Platform 6"
+		},
+		{
+			"name": "Thornleigh Station Platform 2"
+		},
+		{
+			"name": "Hurstville Station Platform 3"
+		},
+		{
+			"name": "Penrith Station Platform 2",
+			"children": [
+				{
+					"name": " Dubbo Station Platform 1"
+				}
+			]
+		},
+		{
+			"name": "Blacktown Station Platform 1"
+		},
+		{
+			"name": "Wombarra Station Platform 2",
+			"children": [
+				{
+					"name": " Coalcliff Station Platform 2",
+					"children": [
+						{
+							"name": " Scarborough Station Platform 2",
+							"children": [
+								{
+									"name": " Cringila Station Platform 2",
+									"children": [
+										{
+											"name": " Lysaghts Station Platform 2",
+											"children": [
+												{
+													"name": " Coniston Station Platform 2"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": " Wombarra Station Platform 2"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Campbelltown Station Platform 2"
+		},
+		{
+			"name": "Bellambi Station Platform 2"
+		},
+		{
+			"name": "Tuggerah Station Platform 2",
+			"children": [
+				{
+					"name": " Warnervale Station Platform 2",
+					"children": [
+						{
+							"name": " Wyee Station Platform 2",
+							"children": [
+								{
+									"name": " Morisset Station Platform 2",
+									"children": [
+										{
+											"name": " Dora Creek Station Platform 2"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Leppington Station Platform 2"
+		},
+		{
+			"name": "Warnervale Station Platform 2"
+		},
+		{
+			"name": "Cardiff Station Platform 2"
+		},
+		{
+			"name": "Revesby Station Platform 3"
+		},
+		{
+			"name": "Central Station Platform 16"
+		},
+		{
+			"name": "Broadmeadow Station Platform 1"
+		},
+		{
+			"name": "Parramatta Station Platform 1"
+		}
+	];
+	var option = {
+		toolbox: { //可视化的工具箱
+			show: true,
+			feature: {
+				dataView: { //数据视图
+					show: true
+				},
+				restore: { //重置
+					show: true
+				},
+				dataZoom: { //数据缩放视图
+					show: true
+				},
+				saveAsImage: {//保存图片
+					show: true
+				}
+			}
+		},
+		tooltip: {
+			trigger: 'item',
+			triggerOn: 'mousemove'
+		},
+		title: {
+			text: '站点行程关系图',
+			x: 'center',
+			//设置为工具栏下面
+			y: 'top',
+			textStyle: {
+				fontSize: 20,
+				fontWeight: 'bold'
+			}
+		},
+		textStyle: {
+			fontSize: '20px'
+		},
+		series: [
+			{
+				type: 'tree',
+				id: 0,
+				name: 'tree1',
+				data: data,
+				top: '10%',
+				left: '8%',
+				bottom: '22%',
+				right: '20%',
+				symbolSize: 7,
+				
+				edgeShape: 'polyline',
+				edgeForkPosition: '63%',
+				initialTreeDepth: 3,
+				
+				lineStyle: {
+					width: 2
+				},
+				
+				label: {
+					backgroundColor: '#fff',
+					position: 'left',
+					verticalAlign: 'middle',
+					align: 'right'
+				},
+				
+				leaves: {
+					label: {
+						position: 'right',
+						verticalAlign: 'middle',
+						align: 'left'
+					}
+				},
+				
+				emphasis: {
+					focus: 'descendant'
+				},
+				
+				expandAndCollapse: true,
+				animationDuration: 550,
+				animationDurationUpdate: 750
+			}
+		]
+	};
+	
+	option && myChart3.setOption(option);
+	
+	
+	let container = document.getElementById('main3');
+	let allNode = 0;
+	const nodes = myChart3._chartsViews[0]._data._graphicEls;
+	for (var i = 0, count = nodes.length; i < count; i++) {
+		const node = nodes[i];
+		if (node === undefined)
+			continue;
+		allNode++;
+	}
+	const height = window.innerHeight;
+	const currentHeight = 35 * allNode;
+	const newWidth = Math.max(currentHeight, height);
+	// container.style.width = window.innerWidth + 'px';
+	// container.style.height = newWidth + 'px';
+	container.style.width = 1800 + 'px';
+	container.style.height = 600 + 'px';
+	myChart3.resize();
+
+</script>
+<div id="main4" style="width: 1800px;height:600px;"></div>
+<script type="text/javascript">
+	
+	
+	var chartDom = document.getElementById('main4');
+	var myChart4 = echarts.init(chartDom);
+	var option4;
+	
+	const builderJson = {
+		all: "时间分析 (秒)",
+		/**
+		 * 行程id/route_id = 平均等待时间(到达时间-出发时间)时间最长的5个站点
+		 * --------------------------------------------------------------------------------
+		 * APS_2d:00:47:05
+		 * APS_1c:00:45:32
+		 * CCN_1c:00:37:51
+		 * SHL_2d:00:14:53
+		 * SCO_2b:00:13:10
+		 * --------------------------------------------------------------------------------
+		 * 行程id/route_id = 平均等待时间(到达时间-出发时间)时间最短的5个站点
+		 * --------------------------------------------------------------------------------
+		 * SHL_1e:00:00:30
+		 * ESI_1a:00:00:30
+		 * SCO_1b:00:00:30
+		 * SCO_1a:00:00:30
+		 * APS_2a:00:00:30
+		 */
+		
+		charts: {
+			"APS_2d": 47 * 60 + 5,
+			"APS_1c": 45 * 60 + 32,
+			"CCN_1c": 37 * 60 + 51,
+			"SHL_2d": 14 * 60 + 53,
+			"SCO_2b": 13 * 60 + 10,
+		},
+		/**
+		 * 站台id(站台名称)/stop_id(stop_name) = 平均等待时间(到达时间-出发时间)时间最长的5个站点
+		 * --------------------------------------------------------------------------------
+		 * 2127102(Olympic Park Station Platform 2) = 04:05:00
+		 * 2000323(Central Station Platform 3) = 02:24:42
+		 * 2000326(Central Station Platform 6) = 00:56:26
+		 * 2000332(Central Station Platform 12) = 00:53:39
+		 * 2000321(Central Station Platform 1) = 00:53:30
+		 * --------------------------------------------------------------------------------
+		 * 站台id(站台名称)/stop_id(stop_name) = 平均等待时间(到达时间-出发时间)时间最短的5个站点
+		 * --------------------------------------------------------------------------------
+		 * 235044(Armidale Station Platform 1) = 00:00:06
+		 * 22180P1(Southern Cross Station Platform 1) = 00:00:06
+		 * 600037(Brisbane (Roma St) Station Platform 2) = 00:00:06
+		 * 204463(St Peters Station Platform 3) = 00:00:00
+		 * 204333(Erskineville Station Platform 3) = 00:00:00
+		 */
+		components: {
+			"Olympic Park Station 2": 4 * 3600 + 5 * 60,
+			"Central Station Platform 3": 2 * 3600 + 24 * 60 + 42,
+			"Central Station Platform 6": 56 * 60 + 26,
+			"Central Station Platform 12": 53 * 60 + 39,
+			"Central Station Platform 1": 53 * 60 + 30,
+		}
+	};
+	/**
+	 * --------------------------------------------------------------------------------
+	 * 行程id/route_id = 平均等待时间(到达时间-出发时间)时间最短的5个站点
+	 * --------------------------------------------------------------------------------
+	 * SHL_1e:00:00:30
+	 * ESI_1a:00:00:30
+	 * SCO_1b:00:00:30
+	 * SCO_1a:00:00:30
+	 * APS_2a:00:00:30
+	 * @type {{APS_2d: number, APS_1c: number, SHL_2d: number, SCO_2b: number, CCN_1c: number}}
+	 */
+	const downloadJson = {
+		"SHL_1e": 30,
+		"ESI_1a": 30,
+		"SCO_1b": 30,
+		"SCO_1a": 30,
+		"APS_2a": 30,
+	};
+	/**
+	 * 站台id(站台名称)/stop_id(stop_name) = 平均等待时间(到达时间-出发时间)时间最短的5个站点
+	 * --------------------------------------------------------------------------------
+	 * 235044(Armidale Station Platform 1) = 00:00:06
+	 * 22180P1(Southern Cross Station Platform 1) = 00:00:06
+	 * 600037(Brisbane (Roma St) Station Platform 2) = 00:00:06
+	 * 204463(St Peters Station Platform 3) = 00:00:00
+	 * 204333(Erskineville Station Platform 3) = 00:00:00
+	 * @type {{"Central Station Platform 1": number, "Olympic Park Station 2": number, "Central Station Platform 3": number, "Central Station Platform 6": number, "Central Station Platform 12": number}}
+	 */
+	const themeJson = {
+		"Armidale Station Platform 1": 6,
+		"Southern Cross Station Platform 1": 6,
+		"Brisbane (Roma St) Station Platform 2": 6,
+		"St Peters Station Platform 3": 0,
+		"Erskineville Station Platform 3": 0,
+	};
+	const waterMarkText = '';
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+	canvas.width = canvas.height = 100;
+	ctx.textAlign = 'center';
+	ctx.textBaseline = 'middle';
+	ctx.globalAlpha = 0.08;
+	ctx.font = '20px Microsoft Yahei';
+	ctx.translate(50, 50);
+	ctx.rotate(-Math.PI / 4);
+	ctx.fillText(waterMarkText, 0, 0);
+	option4 = {
+		backgroundColor: {
+			type: 'pattern',
+			image: canvas,
+			repeat: 'repeat'
+		},
+		tooltip: {},
+		title: [
+			{
+				text: '时间分析 (秒)',
+				left: '25%',
+				textAlign: 'center'
+			},
+			{
+				text: 'route_id',
+				subtext:
+						'总计 ' +
+						Object.keys(downloadJson).reduce(function (all, key) {
+							return all + downloadJson[key];
+						}, 0),
+				left: '75%',
+				textAlign: 'center'
+			},
+			{
+				text: 'stop_id',
+				subtext:
+						'总计 ' +
+						Object.keys(themeJson).reduce(function (all, key) {
+							return all + themeJson[key];
+						}, 0),
+				left: '75%',
+				top: '50%',
+				textAlign: 'center'
+			}
+		],
+		grid: [
+			{
+				top: 50,
+				width: '50%',
+				bottom: '45%',
+				left: 10,
+				containLabel: true
+			},
+			{
+				top: '55%',
+				width: '50%',
+				bottom: 0,
+				left: 10,
+				containLabel: true
+			}
+		],
+		xAxis: [
+			{
+				type: 'value',
+				max: builderJson.all,
+				splitLine: {
+					show: false
+				}
+			},
+			{
+				type: 'value',
+				max: builderJson.all,
+				gridIndex: 1,
+				splitLine: {
+					show: false
+				}
+			}
+		],
+		yAxis: [
+			{
+				type: 'category',
+				data: Object.keys(builderJson.charts),
+				axisLabel: {
+					interval: 0,
+					rotate: 30
+				},
+				splitLine: {
+					show: false
+				}
+			},
+			{
+				gridIndex: 1,
+				type: 'category',
+				data: Object.keys(builderJson.components),
+				axisLabel: {
+					interval: 0,
+					rotate: 30
+				},
+				splitLine: {
+					show: false
+				}
+			}
+		],
+		series: [
+			{
+				type: 'bar',
+				stack: 'chart',
+				z: 3,
+				label: {
+					position: 'right',
+					show: true
+				},
+				data: Object.keys(builderJson.charts).map(function (key) {
+					return builderJson.charts[key];
+				})
+			},
+			{
+				type: 'bar',
+				stack: 'chart',
+				silent: true,
+				itemStyle: {
+					color: '#eee'
+				},
+				data: Object.keys(builderJson.charts).map(function (key) {
+					return builderJson.all - builderJson.charts[key];
+				})
+			},
+			{
+				type: 'bar',
+				stack: 'component',
+				xAxisIndex: 1,
+				yAxisIndex: 1,
+				z: 3,
+				label: {
+					position: 'right',
+					show: true
+				},
+				data: Object.keys(builderJson.components).map(function (key) {
+					return builderJson.components[key];
+				})
+			},
+			{
+				type: 'bar',
+				stack: 'component',
+				silent: true,
+				xAxisIndex: 1,
+				yAxisIndex: 1,
+				itemStyle: {
+					color: '#eee'
+				},
+				data: Object.keys(builderJson.components).map(function (key) {
+					return builderJson.all - builderJson.components[key];
+				})
+			},
+			{
+				type: 'pie',
+				radius: [0, '30%'],
+				center: ['75%', '25%'],
+				data: Object.keys(downloadJson).map(function (key) {
+					return {
+						name: key.replace('.js', ''),
+						value: downloadJson[key]
+					};
+				})
+			},
+			{
+				type: 'pie',
+				radius: [0, '30%'],
+				center: ['75%', '75%'],
+				data: Object.keys(themeJson).map(function (key) {
+					return {
+						name: key.replace('.js', ''),
+						value: themeJson[key]
+					};
+				})
+			}
+		]
+	};
+	
+	option4 && myChart4.setOption(option4);
+</script>
+<div id="main5" style="width: 1800px;height:600px;"></div>
+<script type="text/javascript">
+	/**
+	 *   "CTY_S1c": 13,
+	 *   "IWL_2j": 5,
+	 *   "IWL_2h": 29,
+	 *   "CTY_NW1c": 16,
+	 *   "CTY_NW1d": 6,
+	 *   "IWL_2d": 35,
+	 *   "IWL_2b": 23,
+	 *   "APS_1a": 40,
+	 *   "APS_1c": 25,
+	 *   "NSN_2a": 29,
+	 *   "BNK_1g": 13,
+	 *   "CTY_S1g": 16,
+	 *   "BNK_1e": 35,
+	 *   "BMT_2": 41,
+	 *   "CTY_W1b": 16,
+	 *   "BNK_1f": 28,
+	 *   "CTY_W1a": 16,
+	 *   "BNK_1c": 3,
+	 *   "BNK_1d": 33,
+	 *   "BMT_1": 40,
+	 *   "BNK_1a": 27,
+	 *   "BNK_1b": 11,
+	 *   "CTY_S1i": 20,
+	 *   "BNK_2a": 30,
+	 *   "ESI_2a": 43,
+	 *   "ESI_2d": 43,
+	 *   "CTY_NC1a": 27,
+	 *   "IWL_1j": 25,
+	 *   "SHL_2d": 9,
+	 *   "SHL_2e": 13,
+	 *   "IWL_1d": 13,
+	 *   "IWL_1c": 41,
+	 *   "IWL_1b": 12,
+	 *   "IWL_1a": 30,
+	 *   "RTTA_REV": 78,
+	 *   "NTH_1b": 42,
+	 *   "WST_2c": 45,
+	 *   "NTH_1a": 56,
+	 *   "WST_2d": 28,
+	 *   "BNK_2f": 20,
+	 *   "BNK_2d": 28,
+	 *   "BNK_2b": 7,
+	 *   "BNK_2c": 4,
+	 *   "SHL_1e": 21,
+	 *   "CGF_2": 8,
+	 *   "CGF_1": 8,
+	 *   "ESI_1d": 40,
+	 *   "ESI_1a": 40,
+	 *   "CMB_2b": 23,
+	 *   "CMB_2a": 36,
+	 *   "SCO_2b": 14,
+	 *   "SHL_1d": 15,
+	 *   "CCN_2b": 40,
+	 *   "CMB_2c": 6,
+	 *   "CCN_2a": 54,
+	 *   "CTY_NC2": 7,
+	 *   "OLY_2b": 2,
+	 *   "WST_1b": 23,
+	 *   "NTH_2a": 45,
+	 *   "SCO_2a": 43,
+	 *   "WST_1a": 47,
+	 *   "CTY_W2a": 16,
+	 *   "CMB_1a": 35,
+	 *   "SCO_1b": 29,
+	 *   "CTY_S2c": 12,
+	 *   "SCO_1a": 53,
+	 *   "CCN_1a": 48,
+	 *   "CMB_1b": 23,
+	 *   "CCN_1c": 44,
+	 *   "CCN_1b": 45,
+	 *   "APS_2a": 35,
+	 *   "OLY_1b": 3,
+	 *   "APS_2d": 16,
+	 *   "NSN_1a": 30,
+	 *   "APS_2f": 5,
+	 *   "CTY_NW2a": 16,
+	 *   "CTY_S2i": 3,
+	 *   "CTY_W2b": 5
+	 */
+	//建立一个map保存数据
+	var map = {
+				"CTY_S1c": 13,
+				"IWL_2j": 5,
+				"IWL_2h": 29,
+				"CTY_NW1c": 16,
+				"CTY_NW1d": 6,
+				"IWL_2d": 35,
+				"IWL_2b": 23,
+				"APS_1a": 40,
+				"APS_1c": 25,
+				"NSN_2a": 29,
+				"BNK_1g": 13,
+				"CTY_S1g": 16,
+				"BNK_1e": 35,
+				"BMT_2": 41,
+				"CTY_W1b": 16,
+				"BNK_1f": 28,
+				"CTY_W1a": 16,
+				"BNK_1c": 3,
+				"BNK_1d": 33,
+				"BMT_1": 40,
+				"BNK_1a": 27,
+				"BNK_1b": 11,
+				"CTY_S1i": 20,
+				"BNK_2a": 30,
+				"ESI_2a": 43,
+				"ESI_2d": 43,
+				"CTY_NC1a": 27,
+				"IWL_1j": 25,
+				"SHL_2d": 9,
+				"SHL_2e": 13,
+				"IWL_1d": 13,
+				"IWL_1c": 41,
+				"IWL_1b": 12,
+				"IWL_1a": 30,
+				"RTTA_REV": 78,
+				"NTH_1b": 42,
+				"WST_2c": 45,
+				"NTH_1a": 56,
+				"WST_2d": 28,
+				"BNK_2f": 20,
+				"BNK_2d": 28,
+				"BNK_2b": 7,
+				"BNK_2c": 4,
+				"SHL_1e": 21,
+				"CGF_2": 8,
+				"CGF_1": 8,
+				"ESI_1d": 40,
+				"ESI_1a": 40,
+				"CMB_2b": 23,
+				"CMB_2a": 36,
+				"SCO_2b": 14,
+				"SHL_1d": 15,
+				"CCN_2b": 40,
+				"CMB_2c": 6,
+				"CCN_2a": 54,
+				"CTY_NC2": 7,
+				"OLY_2b": 2,
+				"WST_1b": 23,
+				"NTH_2a": 45,
+				"SCO_2a": 43,
+				"WST_1a": 47,
+				"CTY_W2a": 16,
+				"CMB_1a": 35,
+				"SCO_1b": 29,
+				"CTY_S2c": 12,
+				"SCO_1a": 53,
+				"CCN_1a": 48,
+				"CMB_1b": 23,
+				"CCN_1c": 44,
+				"CCN_1b": 45,
+				"APS_2a": 35,
+				"OLY_1b": 3,
+				"APS_2d": 16,
+				"NSN_1a": 30,
+				"APS_2f": 5,
+				"CTY_NW2a": 16,
+				"CTY_S2i": 3,
+				"CTY_W2b": 5
+			};
+	var myChart5 = echarts.init(document.getElementById('main5'));
+	let xAxisData = [];
+	//遍历map中的数据，将key保存到xAxisData中
+	for(let i in map){
+		xAxisData.push(i);
+	}
+	//遍历map中的数据，将value保存到seriesData中
+	let seriesData = [];
+	for(let i in map){
+		seriesData.push(map[i]);
+	}
+	let yMax = 500;
+	let dataShadow = [];
+	for (let i = 0; i < seriesData.length; i++) {
+		dataShadow.push(yMax);
+	}
+	var option5 = {
+		title: {
+			text: 'Rainfall vs Evaporation',
+			subtext: 'Fake Data'
+		},
+		tooltip: {
+			trigger: 'axis'
+		},
+		legend: {
+			data: ['Number']
+		},
+		toolbox: {
+			show: true,
+			feature: {
+				dataView: { show: true, readOnly: false },
+				magicType: { show: true, type: ['line', 'bar'] },
+				restore: { show: true },
+				saveAsImage: { show: true }
+			}
+		},
+		calculable: true,
+		xAxis: [
+			{
+				type: 'category',
+				// prettier-ignore
+				data: xAxisData
+			}
+		],
+		yAxis: [
+			{
+				type: 'value'
+			}
+		],
+		series: [
+			{
+				name: 'Rainfall',
+				type: 'bar',
+				data: seriesData,
+				markPoint: {
+					data: [
+						{ type: 'max', name: 'Max' },
+						{ type: 'min', name: 'Min' }
+					]
+				},
+				markLine: {
+					data: [{ type: 'average', name: 'Avg' }]
+				}
+			}
+		]
+	};
+	myChart5.setOption(option5);
+</script>
+</body>
+</html>
